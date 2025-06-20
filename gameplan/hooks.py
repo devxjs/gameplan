@@ -91,7 +91,7 @@ website_redirects = [
 before_install = "gameplan.install.before_install"
 after_install = "gameplan.install.after_install"
 
-after_migrate = ["gameplan.search.build_index_in_background"]
+#after_migrate = ["gameplan.search.build_index_in_background"]
 
 # Uninstallation
 # ------------
