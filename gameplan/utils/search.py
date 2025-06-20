@@ -7,7 +7,6 @@ import json
 import frappe
 from frappe.utils import cstr
 from redis.commands.search.field import TagField, TextField
-from redis.commands.search.indexDefinition import IndexDefinition
 from redis.commands.search.query import Query
 from redis.exceptions import ResponseError
 
@@ -22,19 +21,9 @@ class Search:
 			self.schema.append(frappe._dict(field))
 
 	def create_index(self):
-		index_def = IndexDefinition(
-			prefix=[f"{self.redis.make_key(self.prefix).decode()}:"],
-		)
-		schema = []
-		for field in self.schema:
-			kwargs = {k: v for k, v in field.items() if k in ["weight", "sortable", "no_index", "no_stem"]}
-			if field.type == "tag":
-				schema.append(TagField(field.name, **kwargs))
-			else:
-				schema.append(TextField(field.name, **kwargs))
-
-		self.redis.ft(self.index_name).create_index(schema, definition=index_def)
-		self._index_exists = True
+	        # RediSearch removed — no index will be created.
+	        frappe.logger().info(f"Index creation skipped for {self.index_name}. RediSearch removed.")
+	        self._index_exists = False
 
 	def add_document(self, id, doc, payload=None):
 		doc = frappe._dict(doc)
